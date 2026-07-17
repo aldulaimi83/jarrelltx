@@ -1,123 +1,122 @@
 (() => {
+  /*
+   * OWNER CONTACT CONFIGURATION
+   * Keep these values aligned with the visible HTML for SEO and accessibility.
+   * Leave an unconfigured social URL as an empty string; matching links stay hidden.
+   */
+  const siteContact = {
+    phoneDisplay: '(512) 363-3797',
+    phoneHref: '+15123633797',
+    email: 'hello@jarrelltx.co',
+    facebook: '',
+    instagram: '',
+    linkedin: 'https://www.linkedin.com/in/ahmedaldulaimi',
+    maps: 'https://www.google.com/maps/search/?api=1&query=Jarrell%2C%20Texas',
+    formEndpoint: '' // Add a production HTTPS form endpoint here when available.
+  };
+
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
   const header = $('[data-site-header]');
-  const menu = $('[data-site-nav]');
+  const nav = $('[data-site-nav]');
   const toggle = $('[data-menu-toggle]');
-  const updateHeader = () => header?.classList.toggle('is-scrolled', scrollY > 24);
-  updateHeader();
-  addEventListener('scroll', updateHeader, { passive: true });
-
   const closeMenu = () => {
-    menu?.classList.remove('is-open');
+    nav?.classList.remove('is-open');
     toggle?.setAttribute('aria-expanded', 'false');
     toggle?.setAttribute('aria-label', 'Open menu');
     document.body.classList.remove('menu-open');
   };
   toggle?.addEventListener('click', () => {
-    const opening = !menu.classList.contains('is-open');
-    menu.classList.toggle('is-open', opening);
-    toggle.setAttribute('aria-expanded', String(opening));
-    toggle.setAttribute('aria-label', opening ? 'Close menu' : 'Open menu');
-    document.body.classList.toggle('menu-open', opening);
+    const open = !nav.classList.contains('is-open');
+    nav.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.body.classList.toggle('menu-open', open);
   });
-  $$('a', menu).forEach(link => link.addEventListener('click', closeMenu));
+  $$('a', nav).forEach(link => link.addEventListener('click', closeMenu));
   addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
-
+  const updateHeader = () => header?.classList.toggle('is-scrolled', scrollY > 16);
+  updateHeader();
+  addEventListener('scroll', updateHeader, { passive: true });
   $$('[data-year]').forEach(node => node.textContent = new Date().getFullYear());
 
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reducedMotion && 'IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    }), { threshold: .12 });
-    $$('.reveal').forEach(node => observer.observe(node));
-    const art = $('.hero-art img');
-    addEventListener('scroll', () => {
-      if (art && scrollY < innerHeight) art.style.transform = `scale(1.03) translateY(${scrollY * .025}px)`;
-    }, { passive: true });
-  } else {
-    $$('.reveal').forEach(node => node.classList.add('is-visible'));
-  }
-
-  // Preview profiles deliberately avoid invented phones, ratings, reviews and street addresses.
-  const businesses = [
-    { name: 'Main Street Café', category: 'Eat and drink', description: 'A preview of how a neighborhood restaurant can introduce its menu and story.', location: 'Jarrell, Texas', image: 'cafe' },
-    { name: 'Jarrell Home Co.', category: 'Home services', description: 'A preview profile for practical help around the home, from repairs to maintenance.', location: 'Serving Jarrell', image: 'home' },
-    { name: '95 Auto Works', category: 'Automotive', description: 'A preview of a clear, useful local auto-service profile built for quick decisions.', location: 'Jarrell, Texas', image: 'auto' },
-    { name: 'Prairie Wellness', category: 'Health and wellness', description: 'A preview profile for local care, movement and everyday wellbeing.', location: 'Jarrell, Texas', image: 'wellness' },
-    { name: 'Market Mercantile', category: 'Shopping', description: 'A preview storefront for locally sold goods, gifts and useful finds.', location: 'Jarrell, Texas', image: 'shop' },
-    { name: 'Northline Bookkeeping', category: 'Professional services', description: 'A preview profile for trusted, straightforward business support.', location: 'Serving Jarrell', image: 'professional' }
-  ];
-
-  const visual = type => {
-    const palettes = {
-      cafe:['#d65f3a','#f4d6a0'], home:['#163f31','#c9ef69'], auto:['#25352c','#e8a879'],
-      wellness:['#d9c9ae','#d65f3a'], shop:['#f0bd4f','#163f31'], professional:['#b9c6b6','#172019']
-    };
-    const [a,b] = palettes[type] || palettes.home;
-    return `<svg viewBox="0 0 600 420" role="img" aria-label="Editorial placeholder illustration"><rect width="600" height="420" fill="${a}"/><circle cx="455" cy="95" r="72" fill="${b}"/><path d="M0 305L180 180l90 70 88-112L600 320v100H0z" fill="${b}" opacity=".9"/><rect x="75" y="122" width="190" height="183" rx="12" fill="#fffdf8"/><rect x="104" y="160" width="132" height="60" rx="6" fill="${a}"/><rect x="132" y="238" width="76" height="67" fill="${b}"/></svg>`;
-  };
-  const card = business => `<article class="listing-card" data-category="${business.category.toLowerCase()}" data-search="${(business.name+' '+business.description).toLowerCase()}">
-    <div class="listing-visual">${visual(business.image)}</div><div class="listing-content"><span class="listing-label">${business.category}</span><h3>${business.name}</h3><p>${business.description}</p><div class="listing-meta">${business.location}</div><a class="text-link" href="contact.html?interest=listing">View profile preview</a></div></article>`;
-  $$('[data-listings]').forEach(root => {
-    const limit = Number(root.dataset.limit || businesses.length);
-    root.innerHTML = businesses.slice(0, limit).map(card).join('');
+  $$('[data-social]').forEach(link => {
+    const url = siteContact[link.dataset.social];
+    if (!url) link.hidden = true;
+    else link.href = url;
   });
 
   const directory = $('[data-directory]');
   if (directory) {
+    const grid = $('[data-business-grid]');
+    const empty = $('[data-empty-state]');
+    const count = $('[data-result-count]');
     const search = $('[data-directory-search]');
     const chips = $$('[data-filter]');
-    const count = $('[data-result-count]');
-    const grid = $('[data-listings]', directory);
     const params = new URLSearchParams(location.search);
+    let businesses = [];
     let category = (params.get('category') || 'all').toLowerCase();
-    if (params.get('q')) search.value = params.get('q');
-    const apply = () => {
+    search.value = params.get('q') || '';
+
+    const safeLink = (url, label, external = false) => url ? `<a class="button small light" href="${url}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${label}</a>` : '';
+    const renderCard = business => `<article class="business-card${business.featured ? ' featured' : ''}">
+      ${business.image ? `<img src="${business.image}" alt="${business.name}" width="800" height="500" loading="lazy">` : ''}
+      <div class="business-card-body"><span class="category">${business.category}</span><h2>${business.name}</h2><p>${business.description}</p>
+      ${business.address ? `<p><strong>Location:</strong> ${business.address}</p>` : ''}
+      <div class="business-actions">${safeLink(business.website, 'Visit website', true)}${safeLink(business.maps, 'Open map', true)}${business.phone ? safeLink(`tel:${business.phone.replace(/[^+\d]/g, '')}`, 'Call') : ''}${business.email ? safeLink(`mailto:${business.email}`, 'Email') : ''}${safeLink(business.facebook, 'Facebook', true)}${safeLink(business.instagram, 'Instagram', true)}</div></div></article>`;
+
+    const applyFilters = () => {
       const query = search.value.trim().toLowerCase();
-      let visible = 0;
-      $$('.listing-card', grid).forEach(item => {
-        const show = (category === 'all' || item.dataset.category === category) && (!query || item.dataset.search.includes(query));
-        item.hidden = !show;
-        if (show) visible++;
-      });
-      count.textContent = `${visible} preview profile${visible === 1 ? '' : 's'}`;
-      $('[data-empty]').hidden = visible !== 0;
+      const filtered = businesses.filter(item => (category === 'all' || item.category.toLowerCase() === category) && (!query || `${item.name} ${item.category} ${item.description}`.toLowerCase().includes(query)));
+      grid.innerHTML = filtered.map(renderCard).join('');
+      const noListings = filtered.length === 0;
+      empty.hidden = !noListings;
+      count.textContent = businesses.length ? `${filtered.length} business${filtered.length === 1 ? '' : 'es'}` : 'Directory accepting submissions';
       const next = new URL(location.href);
       query ? next.searchParams.set('q', query) : next.searchParams.delete('q');
       category !== 'all' ? next.searchParams.set('category', category) : next.searchParams.delete('category');
       history.replaceState({}, '', next);
     };
+
     chips.forEach(chip => {
-      const active = chip.dataset.filter === category;
-      chip.setAttribute('aria-pressed', String(active));
+      chip.setAttribute('aria-pressed', String(chip.dataset.filter === category));
       chip.addEventListener('click', () => {
         category = chip.dataset.filter;
-        chips.forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
-        apply();
+        chips.forEach(item => item.setAttribute('aria-pressed', String(item === chip)));
+        applyFilters();
       });
     });
-    search.addEventListener('input', apply);
-    apply();
+    search.addEventListener('input', applyFilters);
+    fetch('data/businesses.json')
+      .then(response => { if (!response.ok) throw new Error('Directory data could not be loaded.'); return response.json(); })
+      .then(data => { businesses = Array.isArray(data) ? data : []; applyFilters(); })
+      .catch(() => { businesses = []; applyFilters(); });
   }
 
-  $$('form[data-email-fallback]').forEach(form => {
+  $$('form[data-static-form]').forEach(form => {
     form.addEventListener('submit', event => {
       event.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
       const status = $('[data-form-status]', form);
-      if (!form.checkValidity()) {
-        form.reportValidity();
+      if (siteContact.formEndpoint) {
+        status.hidden = false;
+        status.textContent = 'Sending your request…';
+        fetch(siteContact.formEndpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+          .then(response => {
+            if (!response.ok) throw new Error();
+            status.textContent = 'Your request was sent. We will reply as soon as practical.';
+            form.reset();
+          })
+          .catch(() => { status.innerHTML = `We could not send the form. Please email <a href="mailto:${siteContact.email}">${siteContact.email}</a>.`; });
         return;
       }
-      // No production submission endpoint is configured. Never claim a successful submission.
+      const data = new FormData(form);
+      const subject = encodeURIComponent(form.dataset.subject || 'JarrellTX.co website request');
+      const body = encodeURIComponent([...data.entries()].filter(([name]) => !name.startsWith('_')).map(([name, value]) => `${name.replaceAll('_', ' ')}: ${value}`).join('\n'));
       status.hidden = false;
-      status.innerHTML = 'This form is not sending yet. Email your request to <a href="mailto:hello@jarrelltx.co">hello@jarrelltx.co</a>.';
-      status.focus();
+      status.innerHTML = `Your email application is opening. If it does not open, email <a href="mailto:${siteContact.email}">${siteContact.email}</a>.`;
+      location.href = `mailto:${siteContact.email}?subject=${subject}&body=${body}`;
     });
   });
 })();
