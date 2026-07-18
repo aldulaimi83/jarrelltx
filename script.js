@@ -9,7 +9,7 @@
     phoneHref: '+15123633797',
     email: 'info@jarrelltx.co',
     facebook: 'https://www.facebook.com/',
-    instagram: 'https://www.instagram.com/',
+    instagram: 'https://www.instagram.com/jarrelltxco/',
     linkedin: 'https://www.linkedin.com/in/ahmedaldulaimi',
     maps: 'https://www.google.com/maps/search/?api=1&query=Jarrell%2C%20Texas',
     formEndpoint: '' // Add a production HTTPS form endpoint here when available.
@@ -65,7 +65,7 @@
       socialRow.className = 'footer-social';
       footerBrand.append(socialRow);
     }
-    socialRow.innerHTML = ['linkedin', 'facebook', 'instagram'].map(network => `<a href="${siteContact[network]}" target="_blank" rel="noopener noreferrer" aria-label="JarrellTX.co on ${network[0].toUpperCase() + network.slice(1)}">${socialIcons[network]}</a>`).join('');
+    socialRow.innerHTML = ['linkedin', 'facebook'].map(network => `<a href="${siteContact[network]}" target="_blank" rel="noopener noreferrer" aria-label="JarrellTX.co on ${network[0].toUpperCase() + network.slice(1)}">${socialIcons[network]}</a>`).join('') + `<a class="instagram-follow" href="${siteContact.instagram}" target="_blank" rel="noopener noreferrer" aria-label="Follow JarrellTX.co on Instagram">${socialIcons.instagram}<span>Follow us on Instagram</span></a>`;
   });
 
   const directory = $('[data-directory]');

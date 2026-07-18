@@ -28,7 +28,7 @@ Phone links use the international `tel:` value `+15123633797`. Visible formattin
 
 ## Add social links
 
-Set `facebook`, `instagram`, or `linkedin` in `siteContact`. The footer icons are generated from these values. Facebook and Instagram currently use their generic platform home pages until real JarrellTX.co profile URLs are available.
+Set `facebook`, `instagram`, or `linkedin` in `siteContact`. The footer links are generated from these values. Instagram uses the official JarrellTX.co account at `https://www.instagram.com/jarrelltxco/`; Facebook continues to use the generic platform home page until a real profile URL is available.
 
 ## Change the Google Maps location
 
@@ -55,7 +55,7 @@ Edit `data/businesses.json`. It must remain a JSON array. A supported record loo
   "email": "hello@example.com",
   "maps": "https://www.google.com/maps/...",
   "facebook": "https://www.facebook.com/...",
-  "instagram": "https://www.instagram.com/...",
+  "instagram": "https://www.instagram.com/jarrelltxco/",
   "image": "assets/images/business-name.jpg",
   "featured": false
 }

@@ -173,6 +173,8 @@ p { color: var(--muted); }
 .footer-social { display: flex; gap: .7rem; margin-top: 1rem; }
 .footer-social a { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.28); border-radius: 50%; }
 .footer-social svg { width: 19px; height: 19px; fill: currentColor; }
+.footer-social .instagram-follow { width: auto; padding: 0 .9rem; display: inline-flex; gap: .5rem; border-radius: 999px; white-space: nowrap; }
+.footer-social .instagram-follow span { font-size: .82rem; font-weight: 750; }
 .footer-bottom { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,.2); display: flex; justify-content: space-between; gap: 1rem; color: rgba(255,255,255,.58); font-size: .8rem; }
 
 :focus-visible { outline: 3px solid #d56e4e; outline-offset: 3px; }
@@ -228,6 +230,8 @@ p { color: var(--muted); }
   .field input, .field select, .field textarea, .form button { width: 100%; max-width: 100%; font-size: 1rem; }
   .contact-card a, .footer-column a, .footer-bottom a, .prose a, .notice, .form-status { overflow-wrap: anywhere; }
   .footer-grid { gap: 2rem; }
+  .footer-social { align-items: center; flex-wrap: wrap; }
+  .footer-social .instagram-follow { max-width: 100%; white-space: normal; }
   .footer-bottom { margin-top: 2rem; }
 }
 @media (max-width: 600px) {
