@@ -20,7 +20,7 @@ Static HTML, CSS, and JavaScript website for JarrellTX.co. The site is compatibl
 
 ## Change contact information
 
-The documented `siteContact` object is near the beginning of `script.js`. Update the phone, email, social URLs, Maps URL, and optional form endpoint there.
+The documented `siteContact` object is near the beginning of `script.js`. Update the phone, public email, social URLs, Maps URL, and optional directory-submission endpoint there. The public address is `info@jarrelltx.co`; the main contact form sends separately to `contact@jarrelltx.co`.
 
 Important contact details also appear directly in the HTML for accessibility and SEO. After changing the configuration, search the HTML files for the old phone or email and update the visible links, metadata, and JSON-LD too.
 
@@ -28,7 +28,7 @@ Phone links use the international `tel:` value `+15123633797`. Visible formattin
 
 ## Add social links
 
-Set `facebook`, `instagram`, or `linkedin` in `siteContact`. Links use `data-social="facebook"`, `data-social="instagram"`, or `data-social="linkedin"`. A link whose configuration is empty is hidden automatically. Add the same real URL directly to the relevant HTML link so it remains useful without JavaScript.
+Set `facebook`, `instagram`, or `linkedin` in `siteContact`. The footer icons are generated from these values. Facebook and Instagram currently use their generic platform home pages until real JarrellTX.co profile URLs are available.
 
 ## Change the Google Maps location
 
@@ -65,9 +65,9 @@ Publish only information supplied or verified by the business. Do not add fictio
 
 ## Configure the forms
 
-The forms currently validate in the browser and prepare a `mailto:` message to `hello@jarrelltx.co`. They do not report a successful web submission.
+The main form in `contact.html` posts to FormSubmit.co for `contact@jarrelltx.co`. On the first live submission, FormSubmit sends an activation email to that inbox. Open the email and approve the form before submissions can be delivered. The form redirects to `contact.html?submitted=true` after a successful submission.
 
-To connect a production form service, set the approved HTTPS endpoint in `siteContact.formEndpoint` in `script.js`. Test the endpoint response before changing the visitor message. No form package or build tool is required.
+The directory form in `list-your-business.html` still validates in the browser and prepares an email to `info@jarrelltx.co`. It does not report a completed submission. To connect that separate form later, set an approved HTTPS endpoint in `siteContact.formEndpoint` and test it before changing the visitor message. No form package or build tool is required.
 
 ## Test locally
 

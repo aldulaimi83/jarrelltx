@@ -7,9 +7,9 @@
   const siteContact = {
     phoneDisplay: '(512) 363-3797',
     phoneHref: '+15123633797',
-    email: 'hello@jarrelltx.co',
-    facebook: '',
-    instagram: '',
+    email: 'info@jarrelltx.co',
+    facebook: 'https://www.facebook.com/',
+    instagram: 'https://www.instagram.com/',
     linkedin: 'https://www.linkedin.com/in/ahmedaldulaimi',
     maps: 'https://www.google.com/maps/search/?api=1&query=Jarrell%2C%20Texas',
     formEndpoint: '' // Add a production HTTPS form endpoint here when available.
@@ -41,10 +41,31 @@
   addEventListener('scroll', updateHeader, { passive: true });
   $$('[data-year]').forEach(node => node.textContent = new Date().getFullYear());
 
+  const successMessage = $('[data-contact-success]');
+  if (successMessage && new URLSearchParams(location.search).get('submitted') === 'true') {
+    successMessage.hidden = false;
+    successMessage.focus();
+  }
+
   $$('[data-social]').forEach(link => {
     const url = siteContact[link.dataset.social];
     if (!url) link.hidden = true;
     else link.href = url;
+  });
+
+  const socialIcons = {
+    linkedin: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 7.3A2.2 2.2 0 1 0 5.2 3a2.2 2.2 0 0 0 0 4.3ZM3.3 21h3.8V9H3.3v12Zm6 0h3.8v-6.7c0-3.7 4.8-4 4.8 0V21h3.8v-8c0-6.2-7-6-8.6-2.9V9H9.3v12Z"/></svg>',
+    facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v2H6v4h3v7h4v-7h3.3l.7-4h-4V9c0-.7.3-1 1-1Z"/></svg>',
+    instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2.2a2.8 2.8 0 1 0 0 5.6 2.8 2.8 0 0 0 0-5.6ZM17.5 5.7a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg>'
+  };
+  $$('.footer-brand').forEach(footerBrand => {
+    let socialRow = $('.footer-social', footerBrand);
+    if (!socialRow) {
+      socialRow = document.createElement('div');
+      socialRow.className = 'footer-social';
+      footerBrand.append(socialRow);
+    }
+    socialRow.innerHTML = ['linkedin', 'facebook', 'instagram'].map(network => `<a href="${siteContact[network]}" target="_blank" rel="noopener noreferrer" aria-label="JarrellTX.co on ${network[0].toUpperCase() + network.slice(1)}">${socialIcons[network]}</a>`).join('');
   });
 
   const directory = $('[data-directory]');
